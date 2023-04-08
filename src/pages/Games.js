@@ -10,7 +10,7 @@ function Games(){
     useEffect(() => {
         axios({
             method: 'GET',
-            url: 'https://api.rawg.io/api/games/the-last-of-us?key=66d0c7fd878844b6b062fe3f3822a772'
+            url: `https://api.rawg.io/api/games/the-last-of-us?key=${process.env.REACT_APP_API_URL}`
         }).then(response => {
             setData(response.data)
         })
