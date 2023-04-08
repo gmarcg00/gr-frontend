@@ -1,33 +1,22 @@
+
 import React from "react";
 import { Input } from "../components/UsedInputs"
 import Navbar from "../components/Navbar"
 import {useForm} from "react-hook-form"
-import { NavLink } from 'react-router-dom';
 import axios from "axios";
-import Cookies from "universal-cookie";
 
-const cookies = new Cookies();
 
-function Login(){
+function SignUp() {
 
     const {register,formState:{errors},handleSubmit} = useForm();
 
     const onSubmit = (data) => {
+        //console.log(data);
         axios({
-            method: 'GET',
+            method: 'POST',
             url: `http://${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_BACKEND_PORT}/user`,
-            params: data
-        }).then(response => {
-            console.log(response.data)
-            var respuesta = response[0];
-            cookies.set('id',respuesta.id, {path:"/"});
-            cookies.set('email',respuesta.email, {path:"/"});
-            cookies.set('userName',respuesta.userName, {path:"/"});
-            alert(`Bienvenido ${respuesta.userName}`)
-        }).catch(error => {
-            console.log(error)
-            alert('Username or password are incorrect.')
-        })
+            data: data
+        }).then(res => console.log(res.data))
     }
 
     return(
@@ -43,18 +32,16 @@ function Login(){
                         </div> 
                     </div>
                     <div className="w-full lg:w-1/2 py-16 px-12">
-                        <h2  className="text-3xl mb-4">Log in</h2>
+                        <h2  className="text-3xl mb-4">Register</h2>
                         <p className="mb-4">
                         Create your account. It’s free and only take a minute
                         </p>
                         <form onSubmit={handleSubmit(onSubmit)}>
+                            <Input placeholder="Email" type="email" name="email" bg={true} register={register("email",{required: true})} errors={errors.name?.type === 'required' && <p>Email field is mandatory</p> } />
                             <Input placeholder="Username" type="text" register={register("userName",{required: true, maxLength: 10})} errors={errors.name?.type === 'required' && <p>Username field is mandatory</p> }/>
                             <Input placeholder="Password" type="password" name="email" register={register("password",{required: true})}/>
-                            <NavLink to="/signup">
-                                <p className="text-center underline pt-5">Don't have an account? Sign up.</p>
-                            </NavLink>
                             <div className="mt-5">
-                                <button className="w-full bg-orange-500 py-3 text-center text-white" type="submit">Log in</button>
+                                <button className="w-full bg-orange-500 py-3 text-center text-white" type="submit">Register Now</button>
                             </div>
                         </form>
                         
@@ -66,7 +53,7 @@ function Login(){
         </>
         
     );
+
 }
 
-
-export default Login;
+export default SignUp;

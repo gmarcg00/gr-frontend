@@ -1,57 +1,23 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom';
 
-export const GameCard = () => {
+export const GameCard = (props) => {
   return (
-    <div className='max-w-[1640px] mx-auto p-4 py-12 grid md:grid-cols-4 gap-6'>
-        {/* Card */}
-        <div className='rounded-xl relative'>
-            <div className='absolute w-full h-full bg-black/50 rounded-xl text-white'>
-                <p className='font-bold text-2xl px-2 pt-4'>Sun's Out, BOGO's Out</p>
-                <p className='px-2'>Through 8/26</p>
-                <button className='border-white bg-white text-black mx-2 absolute bottom-4'>Order Now</button>
-            </div>
-            <img
-                className='max-h-[160px] md:max-h-[200px] w-full object-cover rounded-xl'
-                src='https://images.unsplash.com/photo-1613769049987-b31b641f25b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjF8fGJyZWFrZmFzdHxlbnwwfDB8MHx8&auto=format&fit=crop&w=800&q=60'
-                alt='/'
-            />
+    <div className='rounded-xl relative'>
+        <div className='absolute w-full h-full bg-black/50 rounded-xl text-white'>
+            <p className='font-bold text-2xl px-2 pt-4'>{props.name}</p>
+            <p className='px-2'>{props.releaseDate}</p>
+            <NavLink to={{
+                pathname: `/game/${props.slug}`,
+            }}>
+                <button className='border-white bg-white text-black mx-2 absolute bottom-4'>View more</button>
+            </NavLink>
         </div>
-        <div className='rounded-xl relative'>
-            <div className='absolute w-full h-full bg-black/50 rounded-xl text-white'>
-                <p className='font-bold text-2xl px-2 pt-4'>Sun's Out, BOGO's Out</p>
-                <p className='px-2'>Through 8/26</p>
-                <button className='border-white bg-white text-black mx-2 absolute bottom-4'>Order Now</button>
-            </div>
-            <img
-                className='max-h-[160px] md:max-h-[200px] w-full object-cover rounded-xl'
-                src='https://media.rawg.io/media/games/a5a/a5a7fb8d9cb8063a8b42ee002b410db6.jpg'
-                alt='/'
-            />
-        </div>
-        <div className='rounded-xl relative'>
-            <div className='absolute w-full h-full bg-black/50 rounded-xl text-white'>
-                <p className='font-bold text-2xl px-2 pt-4'>Sun's Out, BOGO's Out</p>
-                <p className='px-2'>Through 8/26</p>
-                <button className='border-white bg-white text-black mx-2 absolute bottom-4'>Order Now</button>
-            </div>
-            <img
-                className='max-h-[160px] md:max-h-[200px] w-full object-cover rounded-xl'
-                src='https://images.unsplash.com/photo-1613769049987-b31b641f25b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjF8fGJyZWFrZmFzdHxlbnwwfDB8MHx8&auto=format&fit=crop&w=800&q=60'
-                alt='/'
-            />
-        </div>
-        <div className='rounded-xl relative'>
-            <div className='absolute w-full h-full bg-black/50 rounded-xl text-white'>
-                <p className='font-bold text-2xl px-2 pt-4'>Sun's Out, BOGO's Out</p>
-                <p className='px-2'>Through 8/26</p>
-                <button className='border-white bg-white text-black mx-2 absolute bottom-4'>Order Now</button>
-            </div>
-            <img
-                className='max-h-[160px] md:max-h-[200px] w-full object-cover rounded-xl'
-                src='https://images.unsplash.com/photo-1613769049987-b31b641f25b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjF8fGJyZWFrZmFzdHxlbnwwfDB8MHx8&auto=format&fit=crop&w=800&q=60'
-                alt='/'
-            />
-        </div>
+        <img
+            className='max-h-[160px] md:max-h-[200px] w-full object-cover rounded-xl'
+            src={props.backgroundImage}
+            alt='/'
+        />
     </div>
   )
 }
