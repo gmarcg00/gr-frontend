@@ -15,7 +15,7 @@ function Login(){
     const onSubmit = (data) => {
         axios({
             method: 'GET',
-            url: `http://${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_BACKEND_PORT}/user`,
+            url: `http://localhost:8080/user`,
             params: data
         }).then(response => {
             console.log(response.data)

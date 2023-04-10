@@ -14,7 +14,7 @@ function SignUp() {
         //console.log(data);
         axios({
             method: 'POST',
-            url: `http://${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_BACKEND_PORT}/user`,
+            url: "http://localhost:8080/user",
             data: data
         }).then(res => console.log(res.data))
     }
