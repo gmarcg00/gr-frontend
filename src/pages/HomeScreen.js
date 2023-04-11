@@ -8,6 +8,7 @@ function HomeScreen() {
 
     const [data,setData] = useState([]);
 
+    
     useEffect(() => {
         axios({
             method: 'GET',
