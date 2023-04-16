@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  jenkins:
+    container_name: jenkinsJDK17
+    image: jenkins/jenkins:2.387.2-lts-jdk17
+    volumes:
+      - ./jenkins_home:/var/jenkins_home
+    ports:
+      - "8080:8080"
