@@ -11,7 +11,7 @@ pipeline {
         }
         stage('Unit Test') { 
             steps {
-                sh 'CI=false npm run test-ci' 
+                sh 'CI=false npm run test' 
             }
         }
     }
