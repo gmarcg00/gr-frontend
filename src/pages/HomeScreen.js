@@ -1,6 +1,6 @@
-import Navbar from "../components/Navbar";
-import MainCard from "../components/MainCard";
-import GameCard from "../components/GameCard";
+import Navbar from "../components/Navbar.jsx";
+import MainCard from "../components/MainCard.jsx";
+import GameCard from "../components/GameCard.jsx";
 import {React, useState, useEffect} from "react";
 import axios from "axios";
 

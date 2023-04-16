@@ -1,6 +1,6 @@
 import React from "react";
-import { Input } from "../components/UsedInputs"
-import Navbar from "../components/Navbar"
+import { Input } from "../components/UsedInputs.js"
+import Navbar from "../components/Navbar.jsx"
 import {useForm} from "react-hook-form"
 import { NavLink } from 'react-router-dom';
 import axios from "axios";

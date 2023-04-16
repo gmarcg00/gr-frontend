@@ -1,7 +1,7 @@
 
 import React from "react";
-import { Input } from "../components/UsedInputs"
-import Navbar from "../components/Navbar"
+import { Input } from "../components/UsedInputs.js"
+import Navbar from "../components/Navbar.jsx"
 import {useForm} from "react-hook-form"
 import axios from "axios";
 
