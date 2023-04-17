@@ -19,8 +19,8 @@ test('renders content', () =>{
         </BrowserRouter>
       );
 
-    //component.getByText("The Last Of Us")
-   // component.getByText("2013-06-14")
+    component.getByText("The Last Of Us")
+    component.getByText("2013-06-14")
    expect(component.container).toHaveTextContent(gameData.name)
    expect(component.container).toHaveTextContent(gameData.releaseDate)
 })
