@@ -4,14 +4,14 @@ pipeline {
     tools {nodejs "nodejs"}
     
     stages {
-        stage('Build') { 
+        stage('Install') { 
             steps {
                 sh 'npm install' 
             }
         }
         stage('Unit Test') { 
             steps {
-                sh 'CI=false npm run test' 
+                sh 'npm run test' 
             }
         }
     }
