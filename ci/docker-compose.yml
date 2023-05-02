@@ -2,9 +2,40 @@ version: '3'
 
 services:
   jenkins:
-    container_name: jenkinsJDK17
+    container_name: jenkins
     image: jenkins/jenkins:2.387.2-lts-jdk17
     volumes:
       - ./jenkins_home:/var/jenkins_home
     ports:
       - "8080:8080"
+    networks:
+      - net
+  sonarqube:
+    container_name: sonarqube
+    image: sonarqube:9.9.1-community
+    ports:
+      - "9000:9000"
+    networks:
+      net:
+        ipv4_address: 172.20.0.10
+    volumes:
+      - ./sonarqube/sonarqube_data:/opt/sonarqube/data
+      - ./sonarqube/sonarqube_logs:/opt/sonarqube/logs
+      - ./sonarqube/sonarqube_extensions:/opt/sonarqube/extensions
+  mysql:
+    container_name: mysql
+    image: gr-db
+    environment:
+      MYSQL_DATABASE: gr-db
+      MYSQL_ROOT_PASSWORD: root-1234
+    ports:
+      - "3306:3306"
+      - "8084:3306"
+    networks:
+      net:
+        ipv4_address: 172.20.0.11
+networks:
+  net:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
