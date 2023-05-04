@@ -24,7 +24,7 @@ services:
       - ./sonarqube/sonarqube_extensions:/opt/sonarqube/extensions
   mysql:
     container_name: mysql
-    image: gr-db
+    image: gr-db:v1
     environment:
       MYSQL_DATABASE: gr-db
       MYSQL_ROOT_PASSWORD: root-1234
