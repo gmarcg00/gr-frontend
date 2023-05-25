@@ -4,9 +4,15 @@ pipeline {
     tools {nodejs "nodejs"}
     
     stages {
-        stage('Build') { 
+        stage('Install') { 
             steps {
                 sh 'npm install' 
+            }
+        }
+        stage('Unit Test') { 
+            steps {
+                //sh 'npm run test' 
+                echo 'TO FIX ERRORS'
             }
         }
     }

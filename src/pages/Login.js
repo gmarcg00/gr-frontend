@@ -1,32 +1,31 @@
 import React from "react";
-import { Input } from "../components/UsedInputs"
-import Navbar from "../components/Navbar"
+import { Input } from "../components/UsedInputs.js"
+import Navbar from "../components/Navbar.jsx"
 import {useForm} from "react-hook-form"
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import Cookies from "universal-cookie";
 
-const cookies = new Cookies();
 
 function Login(){
 
     const {register,formState:{errors},handleSubmit} = useForm();
+    const navigate = useNavigate();
 
     const onSubmit = (data) => {
         axios({
-            method: 'GET',
-            url: `http://localhost:8080/user`,
-            params: data
-        }).then(response => {
-            console.log(response.data)
-            var respuesta = response[0];
-            cookies.set('id',respuesta.id, {path:"/"});
-            cookies.set('email',respuesta.email, {path:"/"});
-            cookies.set('userName',respuesta.userName, {path:"/"});
-            alert(`Bienvenido ${respuesta.userName}`)
-        }).catch(error => {
-            console.log(error)
-            alert('Username or password are incorrect.')
+            method: 'POST',
+            url: `http://localhost:8081/user/login`,
+            data: data
+        }).then(response =>{
+            if(response.status == 200){
+                const cookie = new Cookies();
+                cookie.set("isSession",true,{path: '/'})
+                cookie.set("userId",response.data.id,{path: '/'})
+                cookie.set("email",response.data.email,{path: '/'})
+                cookie.set("userName",response.data.userName,{path: '/'})
+                navigate("/dashboard")
+            }
         })
     }
 

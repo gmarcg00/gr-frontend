@@ -29,7 +29,6 @@ services:
       MYSQL_DATABASE: gr-db
       MYSQL_ROOT_PASSWORD: root-1234
     ports:
-      - "3306:3306"
       - "8084:3306"
     networks:
       net:

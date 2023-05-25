@@ -1,6 +1,5 @@
 import {React, useState, useEffect} from "react";
-import Navbar from "../components/Navbar";
-import GameCard from "../components/GameCard";
+import GameCard from "../components/GameCard.jsx";
 import axios from "axios";
 
 function Games(){
