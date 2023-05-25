@@ -1,22 +1,32 @@
-
-import React from "react";
 import { Input } from "../components/UsedInputs.js"
 import Navbar from "../components/Navbar.jsx"
 import {useForm} from "react-hook-form"
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
+import Cookies from "universal-cookie";
 
 
 function SignUp() {
 
     const {register,formState:{errors},handleSubmit} = useForm();
+    const navigate = useNavigate();
 
     const onSubmit = (data) => {
-        //console.log(data);
         axios({
             method: 'POST',
-            url: "http://localhost:8080/user",
+            url: "http://localhost:8081/user/register",
             data: data
-        }).then(res => console.log(res.data))
+        }).then(response =>{
+            if(response.status == 201){
+                const cookie = new Cookies();
+                cookie.set("isSession",true,{path: '/'})
+                cookie.set("userId",response.data.id,{path: '/'})
+                cookie.set("email",response.data.email,{path: '/'})
+                cookie.set("userName",response.data.userName,{path: '/'})
+                navigate("/dashboard")
+            }
+            
+        })
     }
 
     return(
@@ -44,14 +54,11 @@ function SignUp() {
                                 <button className="w-full bg-orange-500 py-3 text-center text-white" type="submit">Register Now</button>
                             </div>
                         </form>
-                        
                     </div>
                 </div>
             </div> 
-        </div>
-            
+        </div>  
         </>
-        
     );
 
 }
