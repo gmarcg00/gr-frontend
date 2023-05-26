@@ -13,7 +13,7 @@ function GameDetails(props){
     useEffect(() => {
         axios({
             method: 'GET',
-            url: `https://api.rawg.io/api/games/${params.id}?key=${process.env.REACT_APP_API_URL}`
+            url: `http://localhost:8081/game/${params.id}`
         }).then(response => {
             setData(response.data)
             console.log(response.data)
