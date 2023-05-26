@@ -9,8 +9,7 @@ let platformData = null;
 let storeData = null;
 
 function Games(){
- 
-    const [initialData,setInitialData] = useState([]);
+
     const [games,setGames] = useState([]);
 
     let storeOptions = null;
@@ -71,9 +70,9 @@ function Games(){
     useEffect(() => {
         axios({
             method: 'GET',
-            url: `https://api.rawg.io/api/games?key=${process.env.REACT_APP_API_URL}`
+            url: `http://localhost:8081/game`
         }).then(response => {
-            setInitialData(response.data.results)
+            setGames(response.data)
         })
     },[])
 
@@ -162,12 +161,7 @@ function Games(){
                     releaseDate={game.released}
                     backgroundImage={game.background_image}>
                 </GameCard>))
-            : initialData.map ((game) => (<GameCard
-                name={game.name}
-                slug={game.slug}
-                releaseDate={game.released}
-                backgroundImage={game.background_image}>
-            </GameCard>))
+            : <div></div>
             }
 
         </div>
