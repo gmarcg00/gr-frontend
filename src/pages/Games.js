@@ -4,15 +4,25 @@ import GameCard from "../components/GameCard";
 import axios from "axios";
 import Select from 'react-select'
 
+
 let genreData = null;
 let platformData = null;
 let storeData = null;
 
+const ITEMS_PER_PAGE = 16;
+
 function Games(){
 
     const [games,setGames] = useState([]);
-
+    console.log(games);
+    const [currentPage,setCurrentPage] = useState(0);
+    const [currentGames,setCurrentGames] = useState([...games].slice(0,ITEMS_PER_PAGE));
+    console.log(currentPage);
+    console.log(currentGames);
+    
+   
     let storeOptions = null;
+    console.log(currentGames);
 
     const genreOptions = [
         { value: 'action', label: 'Action' },
@@ -30,6 +40,30 @@ function Games(){
         { value: 'electronic-arts', label: 'Electronic Arts' },
         { value: 'sony-interactive-entertainment', label: 'Sony' }
     ]
+
+    const prevHandler = () => {
+        const prevPage = currentPage -1;
+
+        if(prevPage < 0) return;
+
+        const firstIndex = prevPage * ITEMS_PER_PAGE;
+
+        setCurrentGames(games.splice(firstIndex,ITEMS_PER_PAGE));
+        setCurrentPage(prevPage);
+
+    }
+
+    const nextHandler = () => {
+        const totalElemns = games.length;
+        const nextPage = currentPage+1;
+
+        const firstIndex = nextPage * ITEMS_PER_PAGE;
+
+        if(firstIndex === totalElemns) return;
+
+        setCurrentGames(games.splice(firstIndex,ITEMS_PER_PAGE));
+        setCurrentPage(nextPage);
+    }
     
     let platformOptions = [
         { value: 'playstation5', label: 'Playstation 5' },
@@ -151,7 +185,21 @@ function Games(){
                 </div>
                 : <div></div>
             }
-        
+
+        </div>
+        <div className='max-w-[1640px] mx-auto grid grid-cols-1 p-4 font-bold px-3'>
+                <h1 className='text-center text-2xl font-mono italic'>
+                    <strong className="text-secondary">{games.length} </strong>
+                    <strong className="text-slate-500">Games</strong>
+                    <strong className="text-slate-500 not-italic"> | </strong>
+                    <strong className="text-slate-500">Page </strong> 
+                    <strong className="text-slate-500">{currentPage+1}</strong>
+                    <strong className="text-slate-500 italic">|</strong>
+                    <strong className="text-slate-500">{Math.ceil(games.length/ITEMS_PER_PAGE)} </strong>
+                    <button onClick={prevHandler} className="bg-orange-500 text-center text-white mx-2" type="submit">Prev</button>
+                    <button onClick={nextHandler} className="bg-orange-500 text-center text-white mx-2" type="submit">Next</button>
+                </h1>
+                
         </div>
         <div className='max-w-[1640px] mx-auto p-4 py-12 grid md:grid-cols-4 gap-6'>
             {games.length > 0 ?
@@ -163,7 +211,6 @@ function Games(){
                 </GameCard>))
             : <div></div>
             }
-
         </div>
         
         </>
