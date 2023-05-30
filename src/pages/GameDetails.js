@@ -1,101 +1,124 @@
 import Navbar from "../components/Navbar.jsx";
 import { useParams } from "react-router-dom";
 import {React, useState, useEffect} from "react";
+import Cookies from "universal-cookie";
 import axios from "axios";
 
+const cookie = new Cookies();
 
-function GameDetails(props){
+const GameDetails = () =>{
     
     const params = useParams();
 
     const [data,setData] = useState([]);
+    const [screenshots,setScreenshots] = useState([]);
 
     useEffect(() => {
-        axios({
-            method: 'GET',
-            url: `http://localhost:8081/game/${params.id}`
-        }).then(response => {
-            setData(response.data)
-            console.log(response.data)
-        })
+        getGameData()
+        getGameScreenshots()
+        
     },[])
+    
+    const getGameData = async() => {
+        const responseGameData = await axios.get(
+            `https://api.rawg.io/api/games/${params.id}?key=${process.env.REACT_APP_API_KEY}`
+        );
+        console.log(responseGameData.data)
+        setData (responseGameData.data)
+    }
+
+    const getGameScreenshots = async() => {
+        const responseGameScreenshots = await axios.get(
+            `https://api.rawg.io/api/games/${params.id}/screenshots?key=${process.env.REACT_APP_API_KEY}`
+        );
+        console.log(responseGameScreenshots.data.results)
+        setScreenshots(responseGameScreenshots.data.results)
+    }
+
+    const handlerLikeButton = () => {
+        axios.post('http://localhost:8081/user/like',{
+            userId: cookie.get("userId"),
+            game: data.slug,
+            like: true
+        }).then(response =>{
+            console.log(response)
+        })
+    }
 
     return(
         <>
             <Navbar />
-            <div className="w-full h-full object-cover bg-orange-50">
-                <div className="flex flex-row ">
-                    <div className="flex flex-col w-1/3 mt-4 ml-24">
-                        <div className="max-w-md">
-                            <div className="flex items-center text-sm pt-9 font-serif ">
-                                <span className="text-gray-900/40">Chair&nbsp;</span>
-                                <span>/ Meryl Lounge Chair</span>
-                            </div>
-                            <div className="pt-10">
-                                <h1 class="text-4xl font-bold tracking-wide">{data.name}</h1>
-                            </div>
-                            <div className="flex items-center justify-between pt-4">
-                                <span class="text-3xl">$149.99</span>
-                                <div className="flex items-center">
-                                    <div className="flex space-x-px">
-                                        <svg width="14" height="13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.735.503a.3.3 0 0 1 .53 0l1.806 3.422a.3.3 0 0 0 .214.155l3.812.66a.3.3 0 0 1 .164.505l-2.696 2.774a.3.3 0 0 0-.082.252l.55 3.83a.3.3 0 0 1-.429.311l-3.472-1.707a.3.3 0 0 0-.264 0l-3.472 1.707a.3.3 0 0 1-.43-.312l.551-3.83a.3.3 0 0 0-.082-.251L.74 5.245a.3.3 0 0 1 .164-.505l3.812-.66a.3.3 0 0 0 .214-.155L6.735.503Z" fill="#FFC41F"></path></svg>
-                                        <svg width="14" height="13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.735.503a.3.3 0 0 1 .53 0l1.806 3.422a.3.3 0 0 0 .214.155l3.812.66a.3.3 0 0 1 .164.505l-2.696 2.774a.3.3 0 0 0-.082.252l.55 3.83a.3.3 0 0 1-.429.311l-3.472-1.707a.3.3 0 0 0-.264 0l-3.472 1.707a.3.3 0 0 1-.43-.312l.551-3.83a.3.3 0 0 0-.082-.251L.74 5.245a.3.3 0 0 1 .164-.505l3.812-.66a.3.3 0 0 0 .214-.155L6.735.503Z" fill="#FFC41F"></path></svg>
-                                        <svg width="14" height="13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.735.503a.3.3 0 0 1 .53 0l1.806 3.422a.3.3 0 0 0 .214.155l3.812.66a.3.3 0 0 1 .164.505l-2.696 2.774a.3.3 0 0 0-.082.252l.55 3.83a.3.3 0 0 1-.429.311l-3.472-1.707a.3.3 0 0 0-.264 0l-3.472 1.707a.3.3 0 0 1-.43-.312l.551-3.83a.3.3 0 0 0-.082-.251L.74 5.245a.3.3 0 0 1 .164-.505l3.812-.66a.3.3 0 0 0 .214-.155L6.735.503Z" fill="#FFC41F"></path></svg>
-                                        <svg width="14" height="13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.735.503a.3.3 0 0 1 .53 0l1.806 3.422a.3.3 0 0 0 .214.155l3.812.66a.3.3 0 0 1 .164.505l-2.696 2.774a.3.3 0 0 0-.082.252l.55 3.83a.3.3 0 0 1-.429.311l-3.472-1.707a.3.3 0 0 0-.264 0l-3.472 1.707a.3.3 0 0 1-.43-.312l.551-3.83a.3.3 0 0 0-.082-.251L.74 5.245a.3.3 0 0 1 .164-.505l3.812-.66a.3.3 0 0 0 .214-.155L6.735.503Z" fill="#FFC41F"></path></svg>
-                                    </div>
-                                    <div className="pl-2 leading-none">
-                                        {data.metacritic}/100
-                                        <span class="text-gray-900/40"> (556)</span>
-                                    </div>
+            {
+               (Array.isArray(data.stores) && screenshots.length > 0 ) &&
+               <div className="w-full h-full bg-cover bg-no-repeat brightness-75 text-white " style={{backgroundImage: `url(${data.background_image})`}}>
+                    <div className="w-full h-full object-cove grid grid-cols-2">
+                        <div className="flex flex-col mx-60 my-20">
+                            <div className="h-1/4">
+                                <div>
+                                    <h3 className="text-2xl font-bold">{data.name}</h3>
                                 </div>
+                                <div className="">
+                                    <h1 className="text-xl font-mono">RELEASE DATE: {data.released}</h1>
+                                </div>
+                            <div className="">
+                                <h1 className="text-xl font-mono">AVERAGE PLAYTIME: {data.playtime} HOURS </h1>
                             </div>
-                            <p class="pt-8 leading-relaxed"> {data.description} </p>
-                            <div class="pt-8"> Free 2-5 day shipping • Tool-free assembly • 30-day trial </div>
-                            <div className="flex items-center justify-between pt-12">
-                                <button class="flex items-center px-4 py-2 space-x-2 text-orange-500 hover:text-orange-500">
-                                    <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg" class="stroke-current">
-                                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.501 5.501 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78v0Z" stroke="#" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                    </svg>
-                                    <span>Add to Wishlist</span>
+                        </div>
+                        <div className="h-2/3 w-3/4">
+                            <h1 className="text-xl font-bold mb-1">ABOUT</h1>
+                            {data.description}
+                            <div className="mt-3">
+                                <button onClick={handlerLikeButton} className="bg-green-800 text-center mt-1 text-white mx-2" type="submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M6.633 10.5c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75A2.25 2.25 0 0116.5 4.5c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23H5.904M14.25 9h2.25M5.904 18.75c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 01-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 10.203 4.167 9.75 5 9.75h1.053c.472 0 .745.556.5.96a8.958 8.958 0 00-1.302 4.665c0 1.194.232 2.333.654 3.375z" />
+                                </svg>
                                 </button>
-                                <div className="flex items-center space-x-6">
-                                    <button>
-                                        <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
-                                            <path d="M16 8c0-4.4-3.6-8-8-8S0 3.6 0 8c0 4 2.9 7.3 6.7 7.9v-5.6h-2V8h2V6.2c0-2 1.2-3.1 3-3.1.9 0 1.8.2 1.8.2v2h-1c-1 0-1.3.6-1.3 1.2V8h2.2l-.4 2.3H9.1V16c4-.6 6.9-4 6.9-8Z" fill="#17183B"></path>
-                                        </svg>
-                                    </button>
-                                </div>
+                                <button onClick={handlerLikeButton} className="bg-red-800 text-center mt-1 text-white mx-2" type="submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 15h2.25m8.024-9.75c.011.05.028.1.052.148.591 1.2.924 2.55.924 3.977a8.96 8.96 0 01-.999 4.125m.023-8.25c-.076-.365.183-.75.575-.75h.908c.889 0 1.713.518 1.972 1.368.339 1.11.521 2.287.521 3.507 0 1.553-.295 3.036-.831 4.398C20.613 14.547 19.833 15 19 15h-1.053c-.472 0-.745-.556-.5-.96a8.95 8.95 0 00.303-.54m.023-8.25H16.48a4.5 4.5 0 01-1.423-.23l-3.114-1.04a4.5 4.5 0 00-1.423-.23H6.504c-.618 0-1.217.247-1.605.729A11.95 11.95 0 002.25 12c0 .434.023.863.068 1.285C2.427 14.306 3.346 15 4.372 15h3.126c.618 0 .991.724.725 1.282A7.471 7.471 0 007.5 19.5a2.25 2.25 0 002.25 2.25.75.75 0 00.75-.75v-.633c0-.573.11-1.14.322-1.672.304-.76.93-1.33 1.653-1.715a9.04 9.04 0 002.86-2.4c.498-.634 1.226-1.08 2.032-1.08h.384" />
+                                </svg>
+                                </button>
                             </div>
                         </div>
                     </div>
+                    <div className="flex flex-col my-20 mx-10">
+                       <div className="h-1/3">
+                           <div className="w-1/2">
+                               <img className="w-full h-full object-cover rounded-xl" src={data.background_image_additional} alt=""/>
+                           </div>
+                       </div>
+                       <div className="h-2/3">
+                           <div className="mt-5 grid grid-cols-2 w-1/2">
+                                {
+                                    screenshots.map ((screenshot) => (
+                                    <div className="">
+                                        <img className="w-full h-full object-cover rounded-xl pt-1 px-1" src={screenshot.image} alt=""/>
+                                    </div>
+                                ))
+                                }
+                            </div>
+                       </div>
+                       <div className="mx-2">
+                           <div className="grid grid-cols-1">
+                               <h1 className="text-xl ">WHERE TO BUY</h1>
+                           </div>
+                           <div className="grid grid-cols-2 w-1/2">
+                               {
+                                 data.stores.map ((store) => (
+                                   <div className="">
+                                        <button className="bg-orange-500 text-center mt-1 text-white mx-2" type="submit">{store.store.name}</button>
+                                   </div>
+                               ))
+                           }
 
-                    <div className="relative flex flex-col items-start w-2/3 mt-4 mr-24">
-                        <div className="w-3/4 mt-48">
-                            <img className="object-cover" src={data.background_image} alt="" />
-                        </div>
-                        <div className="flex items-start pr-20 pt-5 space-x-4">
-                            <div className="w-24 h-24 pl-1 border-2 cursor-pointer border-gray-900/10 hover:border-orange-500">
-                                <img className="w-full h-full object-cover" src={data.background_image} alt="" />
-                            </div>
-                            <div className="w-24 h-24 pl-1 border-2 cursor-pointer border-gray-900/10 hover:border-orange-500">
-                                <img className="w-full h-full object-cover" src={data.background_image} alt="" />
-                            </div>
-                            <div className="w-24 h-24 pl-1 border-2 cursor-pointer border-gray-900/10 hover:border-orange-500">
-                                <img className="w-full h-full object-cover" src={data.background_image} alt="" />
-                            </div>
-                            <div className="w-24 h-24 pl-1 border-2 cursor-pointer border-gray-900/10 hover:border-orange-500">
-                                <img className="w-full h-full object-cover" src={data.background_image} alt="" />
-                            </div>
-                        </div>
+                           </div>  
+                       </div>
                     </div>
-                </div>
-                
-            </div>        
+                    </div>
+               </div>
+            }
             
-
         </>
-
-
     );
 
 }

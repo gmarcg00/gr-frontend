@@ -1,5 +1,6 @@
 import {React, useState, useEffect} from "react";
 import GameCard from "../components/GameCard.jsx";
+import Navbar from "../components/Navbar.jsx";
 import axios from "axios";
 import Select from 'react-select'
 

@@ -24,7 +24,7 @@ function Login(){
                 cookie.set("userId",response.data.id,{path: '/'})
                 cookie.set("email",response.data.email,{path: '/'})
                 cookie.set("userName",response.data.userName,{path: '/'})
-                navigate("/dashboard")
+                navigate("/")
             }
         })
     }
