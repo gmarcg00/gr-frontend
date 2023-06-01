@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom';
 function Account(){
     return (
         <>
-        <div className="">
+        <div className="bg-black text-white">
             <Navbar></Navbar>
             <div className='ml-56 p-4'>
                 <h1 className='px-4 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold  '>My <span className='text-orange-500'>account</span></h1>
