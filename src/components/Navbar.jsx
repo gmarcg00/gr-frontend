@@ -53,7 +53,7 @@ function Navbar () {
                                 </h1>
                             </NavLink>
                 
-                            <div className='bg-gray-200 rounded-full flex items-center px-5 w-[400px] sm:w-[600px] lg:w-[1500px]'>
+                            <div className='bg-gray-200 rounded-full flex items-center px-5 w-[400px] sm:w-[600px] lg:w-[1200px]'>
                                 <AiOutlineSearch size={20} />
                                 <input
                                     className='bg-transparent p-2 w-full focus:outline-none'
@@ -82,7 +82,7 @@ function Navbar () {
                         
                     </div>
                         
-                    <div className="max-w-[1640px] ml-56 mt-0 grid grid-cols-1 p-4 font-bold px-3 ">
+                    <div className="max-w-[1640px] ml-56 mt-0 grid grid-cols-1 p-4 font-bold px-3 absolute z-20 ">
                         {data.length > 0 
                         ? data.map ((game) => (<SearchResult
                             name = {game.name}
@@ -107,8 +107,8 @@ function Navbar () {
                             </h1>
                         </NavLink>
             
-                        <div className='bg-gray-200 rounded-full flex items-center px-5 w-[400px] sm:w-[600px] lg:w-[1500px]'>
-                            <AiOutlineSearch size={25} />
+                        <div className='bg-gray-200 rounded-full flex items-center px-5 w-[400px] sm:w-[600px] lg:w-[1075px]'>
+                            <AiOutlineSearch size={20} />
                             <input
                                 className='bg-transparent p-2 w-full focus:outline-none'
                                 type='text'
@@ -143,7 +143,7 @@ function Navbar () {
                 
                 </div>
 
-                <div className="max-w-[1640px] mx-52 mt-0 grid grid-cols-1 p-4 font-bold px-3 fixed z-40">
+                <div className="max-w-[1640px] mx-52 mt-0 grid grid-cols-1 p-4 font-bold px-3 absolute">
                     {data.length > 0 
                     ? data.map ((game) => (<SearchResult
                         name = {game.name}

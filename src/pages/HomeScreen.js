@@ -31,7 +31,6 @@ function HomeScreen() {
                     </GameCard>))}
                 </div>
             </div>
-            
         </>
     );
 }
