@@ -53,8 +53,8 @@ function Navbar () {
                                 </h1>
                             </NavLink>
                 
-                            <div className='bg-gray-200 rounded-full flex items-center px-5 w-[400px] sm:w-[600px] lg:w-[1200px]'>
-                                <AiOutlineSearch size={20} />
+                            <div className='bg-gray-200 rounded-full flex items-center px-5 w-[400px] sm:w-[600px] lg:w-[1075px]'>
+                                <AiOutlineSearch size={25} />
                                 <input
                                     className='bg-transparent p-2 w-full focus:outline-none'
                                     type='text'
@@ -69,16 +69,24 @@ function Navbar () {
                             </NavLink>
 
                             <NavLink to="/user/account">
-                            <h1 className='text-xl sm:text-rxl lg:-2xl px-4'>
-                                {cookie.get("userName")}
-                            </h1>
+                                <h1 className='text-xl sm:text-rxl lg:-2xl px-4'>
+                                    {cookie.get("userName")}
+                                </h1>
                             </NavLink>
-                            
+                            <NavLink to="/">
+                                <h1 onClick={accountHandler} className='text-xl sm:text-rxl lg:-2xl px-4 text-white'>
+                                    LOG <span className='font-bold text-orange-500 '>OUT</span>
+                                </h1>
+                            </NavLink>
+                         
                         </div>
-                
-                        <button onClick={accountHandler} className='bg-black text-white hidden md:flex items-center py-2 rounded-full'>
+
+                        <NavLink to="/user/account">
+                        <button className='bg-black text-white hidden md:flex items-center py-2 rounded-full'>
                                 <CgProfile size={30} className='mr-2' />
                         </button>
+                        </NavLink>
+                        
                         
                     </div>
                         
@@ -143,7 +151,7 @@ function Navbar () {
                 
                 </div>
 
-                <div className="max-w-[1640px] mx-52 mt-0 grid grid-cols-1 p-4 font-bold px-3 absolute">
+                <div className="max-w-[1640px] mx-52 mt-0 grid grid-cols-1 p-4 font-bold px-3 absolute z-20">
                     {data.length > 0 
                     ? data.map ((game) => (<SearchResult
                         name = {game.name}

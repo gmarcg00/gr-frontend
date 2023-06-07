@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import {React, useState, useEffect} from "react";
 import Cookies from "universal-cookie";
 import axios from "axios";
-import { NavLink } from 'react-router-dom';
+import { NavLink ,useNavigate} from 'react-router-dom';
 
 const cookie = new Cookies();
 
@@ -16,22 +16,18 @@ const GameDetails = () =>{
     const [isSession,setIsSession] = useState(cookie.get("isSession"));
     const [isLike,setIsLike] = useState(false);
     const [isDislike,setIsDislike] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         getGameData()
         getGameScreenshots()
-        console.log(data)
-        getReaction()
-        console.log(isLike)
-        console.log(isDislike)
-        
+        getReaction()   
     },[])
     
     const getGameData = async() => {
         const responseGameData = await axios.get(
             `https://api.rawg.io/api/games/${params.id}?key=${process.env.REACT_APP_API_KEY}`
         );
-        console.log(responseGameData.data)
         setData(responseGameData.data)
     }
 
@@ -39,7 +35,6 @@ const GameDetails = () =>{
         const responseGameScreenshots = await axios.get(
             `https://api.rawg.io/api/games/${params.id}/screenshots?key=${process.env.REACT_APP_API_KEY}`
         );
-        console.log(responseGameScreenshots.data.results)
         setScreenshots(responseGameScreenshots.data.results)
     }
 
@@ -79,7 +74,6 @@ const GameDetails = () =>{
                     reactionType: "Like"
                 }
             }).then(response =>{
-                console.log(response)
                 setIsLike(false)
             }) 
         }        
@@ -102,10 +96,14 @@ const GameDetails = () =>{
                     reactionType: "Dislike"
                 }
             }).then(response =>{
-                console.log(response)
                 setIsDislike(false)
             }) 
         }        
+    }
+
+    const handlerWriteCommentButton = () => {
+        console.log(isSession + "hola")
+        isSession == "true" ?  navigate(`/write/comment/game/${data.slug}`) : navigate("/login")
     }
 
     return(
@@ -129,7 +127,7 @@ const GameDetails = () =>{
                         </div>
                         <div className="h-2/3 w-8/10">
                             <h1 className="text-xl font-bold mb-1">ABOUT</h1>
-                            {data.description}
+                            {data.description.slice(0,-400)}
                             <div className="mt-3 grid grid-cols-2 w-1/3">
                             {
                                 ((isLike == true) || (isLike == false) && (isDislike == false)) ?
@@ -144,7 +142,7 @@ const GameDetails = () =>{
                             }
                             {
                                 ((isDislike == true) || (isLike == false) && (isDislike == false)) &&
-                                <div className="mx-5">
+                                <div className="mx-4">
                                     <button onClick={handlerDislikeButton} className="bg-red-800 text-center mt-1 text-white mx-2" type="submit">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 15h2.25m8.024-9.75c.011.05.028.1.052.148.591 1.2.924 2.55.924 3.977a8.96 8.96 0 01-.999 4.125m.023-8.25c-.076-.365.183-.75.575-.75h.908c.889 0 1.713.518 1.972 1.368.339 1.11.521 2.287.521 3.507 0 1.553-.295 3.036-.831 4.398C20.613 14.547 19.833 15 19 15h-1.053c-.472 0-.745-.556-.5-.96a8.95 8.95 0 00.303-.54m.023-8.25H16.48a4.5 4.5 0 01-1.423-.23l-3.114-1.04a4.5 4.5 0 00-1.423-.23H6.504c-.618 0-1.217.247-1.605.729A11.95 11.95 0 002.25 12c0 .434.023.863.068 1.285C2.427 14.306 3.346 15 4.372 15h3.126c.618 0 .991.724.725 1.282A7.471 7.471 0 007.5 19.5a2.25 2.25 0 002.25 2.25.75.75 0 00.75-.75v-.633c0-.573.11-1.14.322-1.672.304-.76.93-1.33 1.653-1.715a9.04 9.04 0 002.86-2.4c.498-.634 1.226-1.08 2.032-1.08h.384" />
@@ -154,21 +152,15 @@ const GameDetails = () =>{
                             }
                             </div>
                             <div className="pt-4 grid grid-cols-2">
-                                    <NavLink to={{
-                                        pathname: `/view/comment/game/${data.slug}`,
-                                    }}>
-                                    <div className="">
-                                        <button className="bg-orange-500 text-center mt-1 text-white mx-2" type="submit">View comments</button>
-                                    </div>
-                                    </NavLink>
+                                <div className="">
+                                    <button className="bg-orange-500 text-center mt-1 text-white mx-2" type="submit">View comments</button>
+                                </div>
+                                
+                                <div onClick={handlerWriteCommentButton} className="">
+                                    <button className="bg-orange-500 text-center mt-1 text-white mx-2" type="submit">Write a comment</button>
+                                </div>
 
-                                    <NavLink to={{
-                                        pathname: `/write/comment/game/${data.slug}`,
-                                    }}>
-                                        <div className="">
-                                            <button className="bg-orange-500 text-center mt-1 text-white mx-2" type="submit">Write a comment</button>
-                                        </div>
-                                    </NavLink>
+                                          
                             </div>
                         </div>
                     </div>

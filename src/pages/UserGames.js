@@ -35,7 +35,7 @@ function UserGames(){
             <Navbar />
             {
                 (Array.isArray(userGames)) &&
-                <div className="bg-black"> 
+                <div className="bg-black bg-cover min-h-screen"> 
                     <div>
                         <div className='max-w-[1640px] mx-auto p-4 text-white'>
                             <h1 className='px-4 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold '>My <span className='text-orange-500'>Games</span></h1>

@@ -166,7 +166,7 @@ function Games(){
         <>
 
         <Navbar />
-        <div className="bg-black">
+        <div className="bg-black bg-cover min-h-screen">
             <div className='max-w-[1640px] mx-auto p-4 text-white'>
                 <h1 className='px-4 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold '>All <span className='text-orange-500'>Games</span></h1>
             </div>
@@ -197,21 +197,6 @@ function Games(){
                     </div>
                     : <div></div>
                 }
-            </div>
-            <div className='max-w-[1640px] mx-auto grid grid-cols-1 p-4 font-bold px-3'>
-                    <h1 className='text-center text-2xl font-mono italic'>
-                        <strong className="text-secondary text-slate-500">{games.length} </strong>
-                        <strong className="text-slate-500">Games</strong>
-                        <strong className="text-slate-500 not-italic"> | </strong>
-                        <strong className="text-slate-500">Page </strong> 
-                        <strong className="text-slate-500">{currentPage+1}</strong>
-                        <strong className="text-slate-500 italic">|</strong>
-                        <strong className="text-slate-500">{Math.ceil(games.length/ITEMS_PER_PAGE)} </strong>
-                        <button onClick={prevHandler} className="bg-orange-500 text-center text-white mx-2" type="submit">Prev</button>
-                        <button onClick={nextHandler} className="bg-orange-500 text-center text-white mx-2" type="submit">Next</button>
-                        <button onClick={resetFilter} className="bg-orange-500 text-center text-white mx-2" type="submit">Reset all</button>
-                    </h1>
-                    
             </div>
             <div className='max-w-[1640px] mx-auto p-4 py-12 grid md:grid-cols-4 gap-6'>
                 {games.length > 0 ?
