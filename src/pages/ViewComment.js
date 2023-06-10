@@ -1,4 +1,5 @@
 import Navbar from "../components/Navbar.jsx";
+import RewardCard from "../components/RewardCard.jsx";
 import Cookies from "universal-cookie";
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -10,7 +11,7 @@ function ViewComment () {
 
     const params = useParams();
     const [gameData,setGameData] = useState([]);
-    const [reviewsData,setReviewsData] = useState([]);
+    const [userReviews,setUserReviews] = useState([]);
 
     const getGameData = async() => {
         const response = await axios.get(
@@ -25,7 +26,7 @@ function ViewComment () {
             `http://localhost:8081/review/game/${params.id}`
         );
         console.log(response.data)
-        setReviewsData(response.data)
+        setUserReviews(response.data)
     }
 
     useEffect(() => {
@@ -36,32 +37,18 @@ function ViewComment () {
     return(
         <>
             <Navbar />
-            <div className="w-full h-full bg-cover bg-no-repeat bg-fixed text-white absolute" style={{backgroundImage: `url(${gameData.background_image})` }}>
-                {
-                    reviewsData.length > 0 ?
-                        reviewsData.map ((review) => (
-                            <div className=" mx-96 mt-10 grid grid-cols-1">
-                                <div className="w-96 h-60 rounded-3xl bg-gray-900 grid grid-cols-3 bg-cover">
-                                    <div className="">
-                                        <div className="text-center mt-10 ml-48">
-                                            {review.userName}
-                                        </div>
-                                    </div>
-                                    <div className="">
-                                        <div className="grid grid-cols-1">
-                                            <div className="text-center mt-10">
-                                                {review.title}
-                                            </div>
-                                            <div className="text-center mt-10">
-                                                {review.content}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> 
-                        ))
-                    : <div></div>  
-                }
+            <div className="bg-cover min-h-screen" style={{backgroundImage: `url(${gameData.background_image})` }}>
+                <div className="max-w-[1640px] mx-auto p-4 py-12 flex flex-cols-3 gap-4">
+                        {userReviews.length > 0 ?
+                            userReviews.map ((review) => (<RewardCard
+                                title={review.title}
+                                game={review.slug}
+                                content={review.content}
+                                userName={review.userName}>
+                            </RewardCard>))
+                            : <div></div>
+                        } 
+                </div>
             </div>  
        </>
     );

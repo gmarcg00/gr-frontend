@@ -42,7 +42,8 @@ const GameDetails = () =>{
         const getReactionResponse = axios.get(
             `http://localhost:8081/reaction/user/${cookie.get("userName")}/game/${params.id}`
         ).then(response =>{
-            if(response == null){
+            console.log(response)
+            if(response.data.length == 0){
                 setIsLike(false)
                 setIsDislike(false)
             }else{
@@ -58,47 +59,57 @@ const GameDetails = () =>{
     }
 
     const handlerLikeButton = () => {
-        if(isLike == false){
-            axios.post('http://localhost:8081/reaction',{
-                userName: cookie.get("userName"),
-                slug: data.slug,
-                reactionType: "Like"
-            }).then(response =>{
-                setIsLike(true)
-            })
-        }else{
-            axios.delete('http://localhost:8081/reaction',{ 
-                data: {
+        if(isSession == "true"){
+            if(isLike == false){
+                axios.post('http://localhost:8081/reaction',{
                     userName: cookie.get("userName"),
                     slug: data.slug,
                     reactionType: "Like"
-                }
-            }).then(response =>{
-                setIsLike(false)
-            }) 
-        }        
+                }).then(response =>{
+                    setIsLike(true)
+                })
+            }else{
+                axios.delete('http://localhost:8081/reaction',{ 
+                    data: {
+                        userName: cookie.get("userName"),
+                        slug: data.slug,
+                        reactionType: "Like"
+                    }
+                }).then(response =>{
+                    setIsLike(false)
+                }) 
+            }        
+        }else{
+            navigate("/login")
+        }
+        
     }
 
     const handlerDislikeButton = () => {
-        if(isDislike == false){
-            axios.post('http://localhost:8081/reaction',{
-                userName: cookie.get("userName"),
-                slug: data.slug,
-                reactionType: "Dislike"
-            }).then(response =>{
-                setIsDislike(true)
-            })
-        }else{
-            axios.delete('http://localhost:8081/reaction',{ 
-                data: {
+        if(isSession == "true"){
+            if(isDislike == false){
+                axios.post('http://localhost:8081/reaction',{
                     userName: cookie.get("userName"),
                     slug: data.slug,
                     reactionType: "Dislike"
-                }
-            }).then(response =>{
-                setIsDislike(false)
-            }) 
-        }        
+                }).then(response =>{
+                    setIsDislike(true)
+                })
+            }else{
+                axios.delete('http://localhost:8081/reaction',{ 
+                    data: {
+                        userName: cookie.get("userName"),
+                        slug: data.slug,
+                        reactionType: "Dislike"
+                    }
+                }).then(response =>{
+                    setIsDislike(false)
+                }) 
+            }        
+        }else{
+            navigate("/login")
+        }
+        
     }
 
     const handlerWriteCommentButton = () => {
@@ -152,10 +163,13 @@ const GameDetails = () =>{
                             }
                             </div>
                             <div className="pt-4 grid grid-cols-2">
+                            <NavLink to={{
+                                 pathname: `/view/comment/game/${data.slug}`,
+                            }}>
                                 <div className="">
                                     <button className="bg-orange-500 text-center mt-1 text-white mx-2" type="submit">View comments</button>
                                 </div>
-                                
+                            </NavLink>
                                 <div onClick={handlerWriteCommentButton} className="">
                                     <button className="bg-orange-500 text-center mt-1 text-white mx-2" type="submit">Write a comment</button>
                                 </div>

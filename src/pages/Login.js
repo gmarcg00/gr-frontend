@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Input } from "../components/UsedInputs.js"
 import Navbar from "../components/Navbar.jsx"
 import {useForm} from "react-hook-form"
 import { NavLink, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import Cookies from "universal-cookie";
+import LoginForm from "../components/LoginForm.jsx";
 
 
 function Login(){
@@ -14,6 +14,7 @@ function Login(){
     const navigate = useNavigate();
 
     const onSubmit = (data) => {
+        console.log(errors)
         axios({
             method: 'POST',
             url: `http://localhost:8081/user/login`,
@@ -54,20 +55,8 @@ function Login(){
                     </div>
                     <div className="w-full lg:w-1/2 py-16 px-12">
                         <h2  className="text-3xl mb-4">Log in</h2>
-                        <p className="mb-4">
-                        Create your account. It’s free and only take a minute
-                        </p>
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                            <Input placeholder="Username" type="text" register={register("userName",{required: true, maxLength: 10})} errors={errors.name?.type === 'required' && <p>Username field is mandatory</p> }/>
-                            <Input placeholder="Password" type="password" name="email" register={register("password",{required: true})}/>
-                            <NavLink to="/signup">
-                                <p className="text-center underline pt-5">Don't have an account? Sign up.</p>
-                            </NavLink>
-                            <div className="mt-5">
-                                <button className="w-full bg-orange-500 py-3 text-center text-white" type="submit">Log in</button>
-                            </div>
-                        </form>
-                        
+                        <p className="mb-4">Create your account. It’s free and only take a minute</p>
+                        <LoginForm></LoginForm>
                     </div>
                 </div>
             </div> 

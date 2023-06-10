@@ -7,18 +7,11 @@ import axios from "axios";
 
 const cookie = new Cookies();
 
-let genreData = null;
-let platformData = null;
-let storeData = null;
-
 function UserGames(){
     const [userGames,setUserGames] = useState([]);
 
 
     useEffect(() => {
-        genreData = null;
-        platformData = null;
-        storeData = null;
 
         axios({
             method: 'GET',

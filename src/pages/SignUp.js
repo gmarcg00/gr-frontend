@@ -1,10 +1,10 @@
-import { Input } from "../components/UsedInputs.js"
 import Navbar from "../components/Navbar.jsx"
 import {useForm} from "react-hook-form"
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import Cookies from "universal-cookie";
+import LoginForm from "../components/LoginForm.jsx";
 
 
 function SignUp() {
@@ -57,10 +57,8 @@ function SignUp() {
                         <p className="mb-4">
                         Create your account. It’s free and only take a minute
                         </p>
+                        <LoginForm></LoginForm>
                         <form onSubmit={handleSubmit(onSubmit)}>
-                            <Input placeholder="Email" type="email" name="email" bg={true} register={register("email",{required: true})} errors={errors.name?.type === 'required' && <p>Email field is mandatory</p> } />
-                            <Input placeholder="Username" type="text" register={register("userName",{required: true, maxLength: 10})} errors={errors.name?.type === 'required' && <p>Username field is mandatory</p> }/>
-                            <Input placeholder="Password" type="password" name="email" register={register("password",{required: true})}/>
                             <div className="mt-5">
                                 <button className="w-full bg-orange-500 py-3 text-center text-white" type="submit">Register Now</button>
                             </div>

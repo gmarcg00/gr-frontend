@@ -1,9 +1,9 @@
-FROM mysql:latest
+FROM node:18.13.0
 
-# Add a database
-ENV MYSQL_DATABASE gr-db
+WORKDIR /app
 
-# Add the content of the sql-scripts/ directory to your image
-# All scripts in docker-entrypoint-initdb.d/ are automatically
-# executed during container startup
-COPY ./gr-db/ /docker-entrypoint-initdb.d/
+COPY ./ /app
+
+EXPOSE 3000
+
+CMD ["npm","start"]
