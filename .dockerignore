@@ -1,0 +1,8 @@
+node_modules/
+ci/
+gr-db/
+Dockerfile
+Jenkinsfile
+.git
+.gitignore
+.dockerignore

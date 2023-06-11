@@ -1,35 +1,12 @@
 import Navbar from "../components/Navbar.jsx"
-import {useForm} from "react-hook-form"
 import React, { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import Cookies from "universal-cookie";
-import LoginForm from "../components/LoginForm.jsx";
+import SignUpForm from "../components/SignUpForm.jsx"
 
 
 function SignUp() {
 
-    const {register,formState:{errors},handleSubmit} = useForm();
     const [gameData,setGameData] = useState([])
-    const navigate = useNavigate();
-
-    const onSubmit = (data) => {
-        axios({
-            method: 'POST',
-            url: "http://localhost:8081/user/register",
-            data: data
-        }).then(response =>{
-            if(response.status == 201){
-                const cookie = new Cookies();
-                cookie.set("isSession",true,{path: '/'})
-                cookie.set("userId",response.data.id,{path: '/'})
-                cookie.set("email",response.data.email,{path: '/'})
-                cookie.set("userName",response.data.userName,{path: '/'})
-                navigate("/")
-            }
-            
-        })
-    }
 
     useEffect(() => {
         const responseGameData = axios.get(
@@ -57,12 +34,7 @@ function SignUp() {
                         <p className="mb-4">
                         Create your account. It’s free and only take a minute
                         </p>
-                        <LoginForm></LoginForm>
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                            <div className="mt-5">
-                                <button className="w-full bg-orange-500 py-3 text-center text-white" type="submit">Register Now</button>
-                            </div>
-                        </form>
+                        <SignUpForm></SignUpForm>
                     </div>
                 </div>
             </div> 

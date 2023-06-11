@@ -41,7 +41,7 @@ function UserGames(){
                                     releaseDate={game.released}
                                     backgroundImage={game.background_image}>
                                 </GameCard>))
-                            : <div></div>
+                            : <div className="bg-black bg-cover min-h-screen"></div>
                              }
                         </div>
                     </div>

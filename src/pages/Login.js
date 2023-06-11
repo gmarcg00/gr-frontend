@@ -1,35 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar.jsx"
-import {useForm} from "react-hook-form"
-import { NavLink, useNavigate } from 'react-router-dom';
-import axios from "axios";
-import Cookies from "universal-cookie";
 import LoginForm from "../components/LoginForm.jsx";
+import axios from "axios";
 
 
 function Login(){
 
-    const {register,formState:{errors},handleSubmit} = useForm();
     const [gameData,setGameData] = useState([])
-    const navigate = useNavigate();
-
-    const onSubmit = (data) => {
-        console.log(errors)
-        axios({
-            method: 'POST',
-            url: `http://localhost:8081/user/login`,
-            data: data
-        }).then(response =>{
-            if(response.status == 200){
-                const cookie = new Cookies();
-                cookie.set("isSession",true,{path: '/'})
-                cookie.set("userId",response.data.id,{path: '/'})
-                cookie.set("email",response.data.email,{path: '/'})
-                cookie.set("userName",response.data.userName,{path: '/'})
-                navigate("/")
-            }
-        })
-    }
 
     useEffect(() => {
         const responseGameData = axios.get(

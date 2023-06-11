@@ -14,7 +14,7 @@ const SignUpForm = () =>{
             url: `http://localhost:8081/user/register`,
             data: data
         }).then(response =>{
-            if(response.status == 200){
+            if(response.status == 201){
                 const cookie = new Cookies();
                 cookie.set("isSession",true,{path: '/'})
                 cookie.set("userId",response.data.id,{path: '/'})
@@ -36,7 +36,7 @@ const SignUpForm = () =>{
                     <input type="email" placeholder="Email" {...register('email', {required: true})}autoComplete="off"></input>
                     {errors.email?.type === 'required' && <p className="text-red-500 font-bold">Email field is mandatory</p>}
                 </div>
-                <div>
+                <div className="mt-6">
                     <input placeholder="Username" {...register('userName',{required: true, maxLength: 8})} autoComplete="off"></input>
                     {errors.userName?.type === 'required' && <p className="text-red-500 font-bold">Username field is mandatory</p>}
                     {errors.userName?.type === 'maxLength' && <p className="text-red-500 font-bold">Username field max length is 8</p>}
@@ -45,11 +45,8 @@ const SignUpForm = () =>{
                     <input type="password" placeholder="Password" {...register('password', {required: true})}autoComplete="off"></input>
                     {errors.password?.type === 'required' && <p className="text-red-500 font-bold">Password field is mandatory</p>}
                 </div>
-                <NavLink to="/signup">
-                    <p className="text-center underline pt-5">Don't have an account? Sign up.</p>
-                </NavLink>
                 <div className="mt-5">
-                <button className="w-full bg-orange-500 py-3 text-center text-white" type="submit">Log in</button>
+                <button className="w-full bg-orange-500 py-3 text-center text-white" type="submit">Register now</button>
                 </div>
             </form> 
         </>
